@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 public class UserController {
     @Autowired
+//    修改了一些东西
     private UserMapper userMapper;
     @GetMapping("/queryUserList")
     public List<User> queryUserList(){
