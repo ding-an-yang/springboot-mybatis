@@ -1,4 +1,4 @@
-package com.kuang.pojo;
+package com.kuang.model;
 
 import lombok.Data;
 
@@ -10,7 +10,4 @@ public class Users {
     private  String name;
     private  String password;
     private  String email;
-    private List<Student> studentsList;
-    private Student student;
-
 }

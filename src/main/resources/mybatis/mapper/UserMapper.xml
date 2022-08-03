@@ -6,8 +6,8 @@
     <select id="queryUserList" resultType="Users">
     select * from users
     </select>
-    <select id="queryUserById" resultType="Users">
-        select * from users  where id=#{id}
+    <select id="queryUserById" resultType="Integer">
+        select * from users  where id=#{userId}
     </select>
     <insert id="addUser" parameterType="Users">
         insert into users (id,name,password,email) values (#{id},#{name},#{password},#{email});
@@ -15,7 +15,7 @@
     <update id="UpdateUser" parameterType="Users">
         update users set name=#{name},password=#{password},email=#{email} where id=#{id};
     </update>
-    <delete id="deleteUser" parameterType="Users">
+    <delete id="deleteUser" parameterType="Integer">
         delete from users where id=#{id}
     </delete>
 </mapper>
