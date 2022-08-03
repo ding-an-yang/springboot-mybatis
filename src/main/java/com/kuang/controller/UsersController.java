@@ -22,7 +22,7 @@ public class UsersController {
     }
 
     @PostMapping("/query_by_id/{userId}")
-    private Users queryUserById(@PathVariable Integer userId){
+    public Users queryUserById(@PathVariable Integer userId){
         return usersService.queryUserById(userId);
     }
 
