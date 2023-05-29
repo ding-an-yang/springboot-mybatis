@@ -2,6 +2,8 @@ package com.kuang.mapper;
 
 import com.kuang.dto.StudentDTO;
 import com.kuang.model.Student;
+import com.kuang.model.Users;
+import com.kuang.vo.StudentAanUserVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -63,8 +65,13 @@ public interface StudentMapper extends tk.mybatis.mapper.common.Mapper<Student> 
             "                #{name}" +
             "           </foreach>" +
             "      </if>" +
-            "      and 1=1" +
             "   </where>" +
             "</script>")
     List<Student> findCount2(List<String> ssname, List<String> uuname);
+
+    @Select("SELECT s.sid,s.name,s.age,s.arddss,u.id uid,u.name uname,u.password,u.email from student s,users u")
+    List<StudentAanUserVo> queryAllList();
+
+    @Select("select * from  users")
+    List<Users> selectUsers();
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="http://localhost:8080/export">下载</a>
+
+<form>
+    姓名：<input type="text" name="sid" value="lisa" /><br/>
+    年龄：<input type="text" name="name" value="12" /><br/><br/>
+    入学时间：<input type="text" name="age" id="a1" value="2013-09-01" /><br/>
+    <input type="button" onclick="download()" id="button" value="下载文件" />
+</form>
+<!--<button onclick="download(2000,'jab')">下载文件</button>-->
+<button onclick="download()">下载文件</button>
+</body>
+<script>
+  function download() {
+        window.open('http://localhost:8080/student/export')
+  }
+</script>
+
+
+</html>

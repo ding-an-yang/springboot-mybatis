@@ -3,7 +3,10 @@ package com.kuang.service.serviceImpl;
 import com.kuang.dto.StudentDTO;
 import com.kuang.mapper.StudentMapper;
 import com.kuang.model.Student;
+import com.kuang.model.Users;
 import com.kuang.service.StudentService;
+import com.kuang.vo.StudentAanUserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,10 +37,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer addStudent(StudentDTO studentDTO) {
         Student student = new Student();
-        student.setAge(studentDTO.getAge());
-        student.setArddss(studentDTO.getArddss());
-        student.setName(studentDTO.getName());
-        student.setSid(studentDTO.getSid());
+        BeanUtils.copyProperties(studentDTO, student);
         return studentMapper.insertSelective(student);
     }
 
@@ -51,4 +51,15 @@ public class StudentServiceImpl implements StudentService {
     public Integer deleteStudent(Integer studentId) {
         return studentMapper.deleteStudent(studentId);
     }
+
+    @Override
+    public List<StudentAanUserVo> queryStudentAanUserList() {
+        return studentMapper.queryAllList();
+    }
+
+    @Override
+    public List<Users> selectUsers(){
+        return studentMapper.selectUsers();
+    }
+
 }

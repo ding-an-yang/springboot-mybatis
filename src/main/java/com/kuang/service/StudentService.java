@@ -2,6 +2,8 @@ package com.kuang.service;
 
 import com.kuang.dto.StudentDTO;
 import com.kuang.model.Student;
+import com.kuang.model.Users;
+import com.kuang.vo.StudentAanUserVo;
 
 import java.util.List;
 
@@ -45,4 +47,12 @@ public interface StudentService {
      * @return 成功返回 1 失败返回 0
      */
     Integer deleteStudent(Integer studentId);
+
+    /**
+     * 两表联查
+     * @return List<StudentAanUserVo>
+     */
+    List<StudentAanUserVo> queryStudentAanUserList();
+
+    List<Users> selectUsers();
 }
