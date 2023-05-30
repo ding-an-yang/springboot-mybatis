@@ -1,5 +1,6 @@
 package com.kuang.model;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @version:
  */
 @Data
+@TableName("orders")
 public class Orders {
     private Integer id;
     private String no;
