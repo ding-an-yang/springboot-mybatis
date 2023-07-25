@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -1000,6 +1001,68 @@ public class ExcelUtils {
             return s;
         }
         return s.trim();
+    }
+
+    public static List<Map<String, Object>> readeExcelData(InputStream excelInputSteam,
+                                                           int sheetNumber,
+                                                           int headerNumber,
+                                                           int rowStart) throws IOException, InvalidFormatException {
+        //需要的变量以及要返回的数据
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<String> headers = new ArrayList<>();
+        //生成工作表
+        Workbook workbook = WorkbookFactory.create(excelInputSteam);
+//        Workbook workbook = new HSSFWorkbook(excelInputSteam);
+        Sheet sheet = workbook.getSheetAt(sheetNumber);
+        Row header = sheet.getRow(headerNumber);
+        //最后一行数据
+        int rowEnd = sheet.getLastRowNum();
+        DataFormatter dataFormatter = new DataFormatter();
+        //获取标题信息
+        for (int i = 0; i < header.getLastCellNum(); ++i) {
+            Cell cell = header.getCell(i);
+            headers.add(dataFormatter.formatCellValue(cell));
+        }
+        //获取内容信息
+        for (int i = rowStart; i <= rowEnd; ++i) {
+            Row currentRow = sheet.getRow(i);
+            if (Objects.isNull(currentRow)) {
+                continue;
+            }
+            Map<String, Object> dataMap = new HashMap<>();
+            for (int j = 0; j < currentRow.getLastCellNum(); ++j) {
+                //将null转化为Blank
+                Cell data = currentRow.getCell(j, Row.CREATE_NULL_AS_BLANK);
+                if (Objects.isNull(data)) {     //感觉这个if有点多余
+                    dataMap.put(headers.get(j), null);
+                } else {
+                    switch (data.getCellType()) {   //不同的类型分别进行存储
+                        case Cell.CELL_TYPE_STRING:
+                            dataMap.put(headers.get(j), data.getRichStringCellValue().getString());
+                            break;
+                        case Cell.CELL_TYPE_NUMERIC:
+                            if (DateUtil.isCellDateFormatted(data)) {
+                                dataMap.put(headers.get(j), data.getDateCellValue());
+                            } else {
+                                String value = dataFormatter.formatCellValue(data);
+                                dataMap.put(headers.get(j), value);
+                            }
+                            break;
+                        case Cell.CELL_TYPE_FORMULA:
+                            String value = dataFormatter.formatCellValue(data);
+                            dataMap.put(headers.get(j), value);
+                            break;
+                        case Cell.CELL_TYPE_BOOLEAN:
+                            dataMap.put(headers.get(j), data.getBooleanCellValue());
+                            break;
+                        default:
+                            dataMap.put(headers.get(j), null);
+                    }
+                }
+            }
+            result.add(dataMap);
+        }
+        return result;
     }
 
 }

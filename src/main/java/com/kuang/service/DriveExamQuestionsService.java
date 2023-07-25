@@ -5,6 +5,7 @@ import com.kuang.model.DriveExamQuestions;
 import com.kuang.model.Student;
 import com.kuang.model.Users;
 import com.kuang.vo.StudentAanUserVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface DriveExamQuestionsService {
     /**
      * 添加学生信息* @return 成功返回 1 失败返回 0
      */
-    Integer addDriveExamQuestions(DriveExamQuestions driveExamQuestions);
+    void addDriveExamQuestions(MultipartFile file);
 
     /**
      * 修改学生信息
